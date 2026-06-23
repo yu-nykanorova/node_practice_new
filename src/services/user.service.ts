@@ -10,6 +10,14 @@ class UserService {
         return userRepository.create(user);
     }
 
+    public update(userId: string, user: IUserDTO): Promise<IUser | null> {
+        return userRepository.update(userId, user);
+    }
+
+    public delete(userId: string): Promise<void> {
+        return userRepository.delete(userId);
+    }
+
     public getById(userId: string): Promise<IUserDTO | null> {
         return userRepository.getById(userId);
     }
