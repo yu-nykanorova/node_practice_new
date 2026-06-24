@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+
 dotenv.config();
 
 function checkEnv(value: string | undefined, name: string) {
@@ -10,9 +11,7 @@ function checkEnv(value: string | undefined, name: string) {
 
 const config = {
     PORT: process.env.PORT,
-    MONGO_URI: checkEnv(process.env.MONGO_URI, "MONGO_URI")
-}
+    MONGO_URI: checkEnv(process.env.MONGO_URI, "MONGO_URI"),
+};
 
-export {
-    config
-}
+export { config };

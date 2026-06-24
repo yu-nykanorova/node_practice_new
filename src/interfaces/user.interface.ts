@@ -4,7 +4,7 @@ export interface IUser {
     surname: string;
     age: number;
     createdAt: Date;
-    updatedAt: Date
+    updatedAt: Date;
 }
 
-export type IUserDTO = Pick<IUser, "name" | "surname" | "age">
+export type IUserDTO = Pick<IUser, "name" | "surname" | "age">;
