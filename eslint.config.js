@@ -30,7 +30,7 @@ export default [
             "@typescript-eslint": tsPlugin,
             prettier: prettierPlugin,
             import: importPlugin,
-            "simple-import-sort":importSortPlugin,
+            "simple-import-sort": importSortPlugin,
         },
         rules: {
             ...js.configs.recommended.rules,
