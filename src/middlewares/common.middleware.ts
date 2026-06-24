@@ -13,6 +13,8 @@ class CommonMiddleware {
                 if (!isObjectIdOrHexString(id)) {
                     throw new ApiError(`Invalide id [${key}]`, 400);
                 }
+
+                next();
             } catch (e) {
                 next(e);
             }
