@@ -1,5 +1,5 @@
 import { StatusCodesEnum } from "../enums/status-codes.enum";
-import { ApiError } from "../errors/api.error";
+import { ApiError } from "../errors/api.errors";
 import { IAuth } from "../interfaces/auth.interface";
 import { ITokenPair } from "../interfaces/token.interface";
 import { IUser, IUserCreateDTO } from "../interfaces/user.interface";

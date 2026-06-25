@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 import { config } from "../configs/config";
 import { StatusCodesEnum } from "../enums/status-codes.enum";
-import { ApiError } from "../errors/api.error";
+import { ApiError } from "../errors/api.errors";
 import { ITokenPair, ITokenPayload } from "../interfaces/token.interface";
 import { tokenRepository } from "../repositories/token.repository";
 

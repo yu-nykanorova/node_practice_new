@@ -1,25 +1,59 @@
-import { IUser, IUserDTO } from "../interfaces/user.interface";
+import { IUser, IUserCreateDTO, IUserUpdateDTO } from "../interfaces/user.interface";
 import { userRepository } from "../repositories/user.repository";
+import { StatusCodesEnum } from "../enums/status-codes.enum";
+import { ApiError } from "../errors/api.errors";
 
 class UserService {
     public getAll(): Promise<IUser[]> {
         return userRepository.getAll();
     }
 
-    public create(user: IUserDTO): Promise<IUser> {
+    public create(user: IUserCreateDTO): Promise<IUser> {
         return userRepository.create(user);
     }
 
-    public update(userId: string, user: IUserDTO): Promise<IUser | null> {
-        return userRepository.update(userId, user);
+    public async updateById(
+        userId: string,
+        user: IUserUpdateDTO,
+    ): Promise<IUser | null> {
+        const data = await userRepository.getById(userId);
+
+        if (!data) {
+            throw new ApiError("User not found", StatusCodesEnum.NOT_FOUND);
+        }
+
+        return await userRepository.updateById(userId, user);
     }
 
-    public delete(userId: string): Promise<void> {
-        return userRepository.delete(userId);
+    public async deleteById(userId: string): Promise<void> {
+        const data = await userRepository.getById(userId);
+
+        if (!data) {
+            throw new ApiError("User not found", StatusCodesEnum.NOT_FOUND);
+        }
+
+        await userRepository.deleteById(userId);
     }
 
-    public getById(userId: string): Promise<IUserDTO | null> {
-        return userRepository.getById(userId);
+    public async getById(userId: string): Promise<IUser> {
+        const user = await userRepository.getById(userId);
+
+        if (!user) {
+            throw new ApiError("User not found", StatusCodesEnum.NOT_FOUND);
+        }
+
+        return user;
+    }
+
+    public async isEmailUnique(email: string): Promise<void> {
+        const user = await userRepository.getByEmail(email);
+
+        if (user) {
+            throw new ApiError(
+                "User is already exists",
+                StatusCodesEnum.BED_REQUEST,
+            );
+        }
     }
 }
 

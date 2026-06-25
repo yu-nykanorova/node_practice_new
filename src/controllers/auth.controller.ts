@@ -43,8 +43,7 @@ class AuthController {
 
     public async refresh(req: Request, res: Response, next: NextFunction) {
         try {
-            const { role, userId } = req.res.locals
-                .tokenPayload as ITokenPayload;
+            const { role, userId } = res.locals.tokenPayload as ITokenPayload;
             const tokens = tokenService.generateTokens({ role, userId });
 
             await tokenRepository.create({
