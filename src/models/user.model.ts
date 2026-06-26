@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
-import { IUser } from "../interfaces/user.interface";
 import { RoleEnum } from "../enums/role.enum";
+import { IUser } from "../interfaces/user.interface";
 
 const userSchema = new Schema(
     {
@@ -18,6 +18,7 @@ const userSchema = new Schema(
         age: { type: Number, required: true },
         isDeleted: { type: Boolean, default: false },
         isVerified: { type: Boolean, default: false },
+        isActive: { type: Boolean, default: true },
     },
     { timestamps: true, versionKey: false },
 );

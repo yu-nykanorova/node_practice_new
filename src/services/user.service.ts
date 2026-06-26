@@ -1,7 +1,11 @@
-import { IUser, IUserCreateDTO, IUserUpdateDTO } from "../interfaces/user.interface";
-import { userRepository } from "../repositories/user.repository";
 import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { ApiError } from "../errors/api.errors";
+import {
+    IUser,
+    IUserCreateDTO,
+    IUserUpdateDTO,
+} from "../interfaces/user.interface";
+import { userRepository } from "../repositories/user.repository";
 
 class UserService {
     public getAll(): Promise<IUser[]> {
@@ -54,6 +58,19 @@ class UserService {
                 StatusCodesEnum.BED_REQUEST,
             );
         }
+    }
+
+    public async changeActiveStatus(
+        userId: string,
+        isActive: boolean,
+    ): Promise<IUser | null> {
+        const data = await userRepository.getById(userId);
+
+        if (!data) {
+            throw new ApiError("User not found", StatusCodesEnum.NOT_FOUND);
+        }
+
+        return await userRepository.changeActiveStatus(userId, isActive);
     }
 }
 

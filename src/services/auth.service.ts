@@ -36,6 +36,13 @@ class AuthService {
             );
         }
 
+        if (!user.isActive) {
+            throw new ApiError(
+                "Your must activate your account at first",
+                StatusCodesEnum.FORBIDDEN,
+            );
+        }
+
         const isValidPassword = await passwordService.comparePassword(
             dto.password,
             user.password,

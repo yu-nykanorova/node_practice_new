@@ -18,11 +18,20 @@ router.put(
     commonMiddleware.validateBody(UserValidator.update),
     userController.updateById,
 );
+
 router.delete(
     "/:id",
     authMiddleware.checkAccessToken,
     commonMiddleware.isIdValidate("id"),
     userController.deleteById,
+);
+
+router.patch(
+    "/:id/status",
+    authMiddleware.checkAccessToken,
+    authMiddleware.isAdmin,
+    commonMiddleware.validateBody(UserValidator.updateIsActive),
+    userController.changeActiveStatus,
 );
 
 export const userRouter = router;

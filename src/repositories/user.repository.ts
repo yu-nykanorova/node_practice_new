@@ -32,6 +32,21 @@ class UserRepository {
     public getByEmail(email: string): Promise<IUser | null> {
         return User.findOne({ email });
     }
+
+    public changeActiveStatus(
+        userId: string,
+        isActive: boolean,
+    ): Promise<IUser | null> {
+        const updatedUser = User.findByIdAndUpdate(
+            userId,
+            {
+                isActive: isActive,
+            },
+            { returnDocument: "after" },
+        );
+        console.log(updatedUser);
+        return updatedUser;
+    }
 }
 
 export const userRepository = new UserRepository();

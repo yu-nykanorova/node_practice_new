@@ -5,12 +5,13 @@ export interface IUser extends IBase {
     _id: string;
     email: string;
     password: string;
-    role: RoleEnum;
-    isDeleted: boolean;
-    isVerified: boolean;
     name: string;
     surname: string;
     age: number;
+    role: RoleEnum;
+    isDeleted: boolean;
+    isVerified: boolean;
+    isActive: boolean;
 }
 
 export type IUserCreateDTO = Pick<
