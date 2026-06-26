@@ -44,7 +44,6 @@ class UserRepository {
             },
             { returnDocument: "after" },
         );
-        console.log(updatedUser);
         return updatedUser;
     }
 }
