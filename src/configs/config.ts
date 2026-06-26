@@ -9,6 +9,8 @@ interface IConfig {
     JWT_REFRESH_SECRET: string;
     JWT_ACCESS_LIFETIME: any;
     JWT_REFRESH_LIFETIME: any;
+    EMAIL_USER: string;
+    EMAIL_PASSWORD: string;
 }
 
 function checkEnv(value: string | undefined, name: string) {
@@ -37,6 +39,8 @@ const config: IConfig = {
         process.env.JWT_REFRESH_LIFETIME,
         "JWT_REFRESH_LIFETIME",
     ),
+    EMAIL_USER: checkEnv(process.env.EMAIL_USER, "EMAIL_USER"),
+    EMAIL_PASSWORD: checkEnv(process.env.EMAIL_PASSWORD, "EMAIL_PASSWORD"),
 };
 
 export { config };
