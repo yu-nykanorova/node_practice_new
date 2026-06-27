@@ -19,4 +19,11 @@ export type IUserCreateDTO = Pick<
     "email" | "password" | "name" | "surname" | "age"
 >;
 
-export type IUserUpdateDTO = Pick<IUser, "name" | "surname" | "age">;
+export type IUserUpdateDTO = Pick<
+    IUser,
+    "name" | "surname" | "age" | "isActive" | "password"
+>;
+
+export type IResetPasswordSendEmail = Pick<IUser, "email">;
+
+export type IResetPasswordSet = Pick<IUser, "password"> & { token: string };

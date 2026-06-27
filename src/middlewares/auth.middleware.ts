@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 
+import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { RoleEnum } from "../enums/role.enum";
 import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { ApiError } from "../errors/api.errors";
 import { IRefresh, ITokenPayload } from "../interfaces/token.interface";
+import { actionTokenRepository } from "../repositories/action-token.repository";
 import { tokenService } from "../services/token.service";
 
 class AuthMiddleware {
@@ -104,6 +106,28 @@ class AuthMiddleware {
         } catch (e) {
             next(e);
         }
+    }
+
+    public checkActionToken(type: ActionTokenTypeEnum) {
+        return async (req: Request, res: Response, next: NextFunction) => {
+            try {
+                const token: string = req.body.token;
+                const payload = tokenService.verifyActionToken(token, type);
+                const tokenEntity =
+                    await actionTokenRepository.getByToken(token);
+                if (!tokenEntity) {
+                    throw new ApiError(
+                        "Invalid token",
+                        StatusCodesEnum.UNAUTHORIZED,
+                    );
+                }
+                res.locals.tokenPayload = payload;
+                res.locals.actionToken = token;
+                next();
+            } catch (e) {
+                next(e);
+            }
+        };
     }
 }
 

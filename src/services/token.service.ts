@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 
 import { config } from "../configs/config";
+import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { ApiError } from "../errors/api.errors";
 import { ITokenPair, ITokenPayload } from "../interfaces/token.interface";
@@ -57,6 +58,60 @@ class TokenService {
             [type]: token,
         });
         return !!iTokenPromise;
+    }
+
+    public generateActionTokens(
+        payload: ITokenPayload,
+        tokenType: ActionTokenTypeEnum,
+    ): string {
+        let secret: string;
+        let tokenLifetime: jwt.SignOptions["expiresIn"];
+
+        switch (tokenType) {
+            case ActionTokenTypeEnum.ACTIVATE_USER:
+                secret = config.ACTION_ACTIVATE_USER_SECRET;
+                tokenLifetime = config.ACTION_ACTIVATE_USER_LIFETIME;
+                break;
+            case ActionTokenTypeEnum.FORGOT_PASSWORD:
+                secret = config.ACTION_FORGOT_PASSWORD_SECRET;
+                tokenLifetime = config.ACTION_FORGOT_PASSWORD_LIFETIME;
+                break;
+            default:
+                throw new ApiError(
+                    "Invalid token type",
+                    StatusCodesEnum.BED_REQUEST,
+                );
+        }
+
+        return jwt.sign(payload, secret, { expiresIn: tokenLifetime });
+    }
+
+    public verifyActionToken(
+        token: string,
+        type: ActionTokenTypeEnum,
+    ): ITokenPayload {
+        try {
+            let secret: string;
+
+            switch (type) {
+                case ActionTokenTypeEnum.ACTIVATE_USER:
+                    secret = config.ACTION_ACTIVATE_USER_SECRET;
+                    break;
+                case ActionTokenTypeEnum.FORGOT_PASSWORD:
+                    secret = config.ACTION_FORGOT_PASSWORD_SECRET;
+                    break;
+                default:
+                    throw new ApiError(
+                        "Invalid token type",
+                        StatusCodesEnum.BED_REQUEST,
+                    );
+            }
+            return jwt.verify(token, secret) as ITokenPayload;
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (e) {
+            throw new ApiError("Invalid token", StatusCodesEnum.UNAUTHORIZED);
+        }
     }
 }
 

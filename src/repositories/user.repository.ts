@@ -16,7 +16,7 @@ class UserRepository {
 
     public updateById(
         userId: string,
-        user: IUserUpdateDTO,
+        user: Partial<IUserUpdateDTO>,
     ): Promise<IUser | null> {
         return User.findByIdAndUpdate(userId, user, { new: true });
     }
@@ -37,14 +37,13 @@ class UserRepository {
         userId: string,
         isActive: boolean,
     ): Promise<IUser | null> {
-        const updatedUser = User.findByIdAndUpdate(
+        return User.findByIdAndUpdate(
             userId,
             {
                 isActive: isActive,
             },
             { returnDocument: "after" },
         );
-        return updatedUser;
     }
 }
 

@@ -3,7 +3,11 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { IAuth } from "../interfaces/auth.interface";
 import { ITokenPayload } from "../interfaces/token.interface";
-import { IUserCreateDTO } from "../interfaces/user.interface";
+import {
+    IResetPasswordSendEmail,
+    IResetPasswordSet,
+    IUserCreateDTO,
+} from "../interfaces/user.interface";
 import { tokenRepository } from "../repositories/token.repository";
 import { authService } from "../services/auth.service";
 import { tokenService } from "../services/token.service";
@@ -51,6 +55,49 @@ class AuthController {
                 _userId: userId,
             });
             res.status(StatusCodesEnum.OK).json(tokens);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    public async activateUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const payload = res.locals.tokenPayload as ITokenPayload;
+            const token = res.locals.actionToken as string;
+            await authService.activateUser(payload, token);
+            res.status(StatusCodesEnum.OK).json(payload);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    public async forgotPasswordSendEmail(
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ) {
+        try {
+            const dto = req.body as IResetPasswordSendEmail;
+            await authService.forgotPasswordSendEmail(dto);
+            res.sendStatus(StatusCodesEnum.OK);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    public async forgotPasswordChange(
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ) {
+        try {
+            const payload = res.locals.tokenPayload as ITokenPayload;
+            const dto = req.body as IResetPasswordSet;
+            const updatedUser = await authService.forgotPasswordChange(
+                dto,
+                payload,
+            );
+            res.status(StatusCodesEnum.OK).json(updatedUser);
         } catch (e) {
             next(e);
         }

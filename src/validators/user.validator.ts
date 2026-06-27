@@ -19,12 +19,19 @@ export class UserValidator {
     });
 
     public static update = joi.object({
-        name: this.name.required(),
-        surname: this.surname.required(),
-        age: this.age.required(),
+        name: this.name,
+        surname: this.surname,
+        age: this.age,
+        isActive: this.isActive,
     });
 
     public static updateIsActive = joi.object({
         isActive: this.isActive.required(),
     });
+
+    public static setNewPassword = joi
+        .object({
+            password: this.password.required(),
+        })
+        .unknown(true);
 }
