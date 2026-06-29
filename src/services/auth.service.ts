@@ -1,6 +1,7 @@
 import { config } from "../configs/config";
-import { templatesConstants } from "../constants/templates.constants";
+import { emailConstants } from "../constants/email.constants";
 import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
+import { EmailEnum } from "../enums/email.enum";
 import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { ApiError } from "../errors/api.errors";
 import { IAuth } from "../interfaces/auth.interface";
@@ -48,8 +49,7 @@ class AuthService {
 
         await emailService.sendEmail(
             newUser.email,
-            "Welcome",
-            templatesConstants.WELCOME,
+            emailConstants[EmailEnum.WELCOME],
             { name: newUser.name, actionToken, frontUrl: config.FRONT_URL },
         );
         return { user: newUser, tokens };
@@ -126,8 +126,7 @@ class AuthService {
 
         await emailService.sendEmail(
             user.email,
-            "Forgot password",
-            templatesConstants.FORGOT_PASSWORD,
+            emailConstants[EmailEnum.FORGOT_PASSWORD],
             { actionToken, frontUrl: config.FRONT_URL },
         );
     }

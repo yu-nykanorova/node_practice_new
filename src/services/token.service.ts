@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
 
-import { config } from "../configs/config";
-import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
-import { StatusCodesEnum } from "../enums/status-codes.enum";
-import { ApiError } from "../errors/api.errors";
-import { ITokenPair, ITokenPayload } from "../interfaces/token.interface";
-import { tokenRepository } from "../repositories/token.repository";
+import {config} from "../configs/config";
+import {ActionTokenTypeEnum} from "../enums/action-token-type.enum";
+import {StatusCodesEnum} from "../enums/status-codes.enum";
+import {ApiError} from "../errors/api.errors";
+import {ITokenPair, ITokenPayload} from "../interfaces/token.interface";
+import {tokenRepository} from "../repositories/token.repository";
+import {TokenTypeEnum} from "../enums/token-type.enum";
 
 class TokenService {
     public generateTokens(payload: ITokenPayload): ITokenPair {
@@ -24,16 +25,16 @@ class TokenService {
 
     public verifyToken(
         token: string,
-        type: "access" | "refresh",
+        type: TokenTypeEnum,
     ): ITokenPayload {
         try {
             let secret: string;
 
             switch (type) {
-                case "access":
+                case TokenTypeEnum.ACCESS:
                     secret = config.JWT_ACCESS_SECRET;
                     break;
-                case "refresh":
+                case TokenTypeEnum.REFRESH:
                     secret = config.JWT_REFRESH_SECRET;
                     break;
                 default:
