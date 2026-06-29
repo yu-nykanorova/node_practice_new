@@ -6,7 +6,7 @@ class TokenRepository {
         return Token.create(dto);
     }
 
-    public findByParams(params: Partial<IToken>): Promise<IToken> {
+    public findByParams(params: Partial<IToken>): Promise<IToken | null> {
         return Token.findOne(params);
     }
 }
