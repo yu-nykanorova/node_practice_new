@@ -1,3 +1,4 @@
+import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 
@@ -9,6 +10,7 @@ import { apiRouter } from "./routers/api.router";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
