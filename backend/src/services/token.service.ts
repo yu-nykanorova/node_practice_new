@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { config } from "../configs/config";
 import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { StatusCodesEnum } from "../enums/status-codes.enum";
+import { TokenTypeEnum } from "../enums/token-type.enum";
 import { ApiError } from "../errors/api.errors";
 import { ITokenPair, ITokenPayload } from "../interfaces/token.interface";
 import { tokenRepository } from "../repositories/token.repository";
@@ -22,18 +23,15 @@ class TokenService {
         };
     }
 
-    public verifyToken(
-        token: string,
-        type: "access" | "refresh",
-    ): ITokenPayload {
+    public verifyToken(token: string, type: TokenTypeEnum): ITokenPayload {
         try {
             let secret: string;
 
             switch (type) {
-                case "access":
+                case TokenTypeEnum.ACCESS:
                     secret = config.JWT_ACCESS_SECRET;
                     break;
-                case "refresh":
+                case TokenTypeEnum.REFRESH:
                     secret = config.JWT_REFRESH_SECRET;
                     break;
                 default:
