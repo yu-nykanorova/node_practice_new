@@ -36,6 +36,7 @@ export default [
             ...js.configs.recommended.rules,
             ...tsPlugin.configs.recommended.rules,
             ...prettierPlugin.configs.recommended.rules,
+            "no-undef": "off",
             "simple-import-sort/imports":"error",
             "simple-import-sort/exports":"error",
             "@typescript-eslint/interface-name-prefix": "off",

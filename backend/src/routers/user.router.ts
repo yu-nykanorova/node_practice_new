@@ -34,4 +34,11 @@ router.patch(
     userController.changeActiveStatus,
 );
 
+router.patch(
+    "/upload-avatar/:id",
+    commonMiddleware.isIdValidate("id"),
+    upload.single("avatar"),
+    userController.uploadAvatar,
+);
+
 export const userRouter = router;
