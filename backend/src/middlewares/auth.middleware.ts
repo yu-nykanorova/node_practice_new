@@ -3,11 +3,11 @@ import { NextFunction, Request, Response } from "express";
 import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { RoleEnum } from "../enums/role.enum";
 import { StatusCodesEnum } from "../enums/status-codes.enum";
+import { TokenTypeEnum } from "../enums/token-type.enum";
 import { ApiError } from "../errors/api.errors";
 import { IRefresh, ITokenPayload } from "../interfaces/token.interface";
 import { actionTokenRepository } from "../repositories/action-token.repository";
 import { tokenService } from "../services/token.service";
-import { TokenTypeEnum } from "../enums/token-type.enum";
 
 class AuthMiddleware {
     public async checkAccessToken(
@@ -51,7 +51,6 @@ class AuthMiddleware {
             }
 
             res.locals.tokenPayload = tokenPayload;
-
             next();
         } catch (e) {
             next(e);

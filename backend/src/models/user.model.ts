@@ -27,7 +27,7 @@ const userSchema = new Schema(
         timestamps: true,
         versionKey: false,
         toJSON: {
-            transform: (doc, ret) => {
+            transform: (doc, ret: any) => {
                 delete ret.password;
                 if (ret.avatar) {
                     ret.avatar = `/media/${path.basename(ret.avatar)}`;

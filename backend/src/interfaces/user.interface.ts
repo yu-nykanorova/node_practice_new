@@ -20,9 +20,8 @@ export type IUserCreateDTO = Pick<
     "email" | "password" | "name" | "surname" | "age"
 >;
 
-export type IUserUpdateDTO = Pick<
-    IUser,
-    "name" | "surname" | "age" | "isActive" | "password"
+export type IUserUpdateDTO = Partial<
+    Pick<IUser, "name" | "surname" | "age" | "isActive" | "password" | "avatar">
 >;
 
 export type IResetPasswordSendEmail = Pick<IUser, "email">;

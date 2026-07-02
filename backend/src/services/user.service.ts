@@ -10,15 +10,16 @@ class UserService {
 
     public async updateById(
         userId: string,
-        user: IUserUpdateDTO,
+        userDataToUpdate: IUserUpdateDTO,
     ): Promise<IUser | null> {
-        const data = await userRepository.getById(userId);
+        console.log("service updateById");
+        const user = await userRepository.getById(userId);
 
-        if (!data) {
+        if (!user) {
             throw new ApiError("User not found", StatusCodesEnum.NOT_FOUND);
         }
 
-        return await userRepository.updateById(userId, user);
+        return await userRepository.updateById(userId, userDataToUpdate);
     }
 
     public async deleteById(userId: string): Promise<void> {

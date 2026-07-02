@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import { upload } from "../configs/multer.config";
 import { userController } from "../controllers/user.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
@@ -35,9 +36,10 @@ router.patch(
 );
 
 router.patch(
-    "/upload-avatar/:id",
-    commonMiddleware.isIdValidate("id"),
+    "/upload-avatar",
+    authMiddleware.checkAccessToken,
     upload.single("avatar"),
+    commonMiddleware.isFileExists(),
     userController.uploadAvatar,
 );
 
