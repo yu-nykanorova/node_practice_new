@@ -19,13 +19,14 @@ class UserService {
             data = [];
             totalItems = 0;
         }
-
-        const totalPages = Math.ceil(totalItems / query.pageSize);
+        const pageSize = query.pageSize || 10;
+        const page = Number(query.page) || 1;
+        const totalPages = Math.ceil(totalItems / pageSize);
         return {
             totalItems,
             totalPages,
-            prevPage: !!(query.page - 1),
-            nextPage: query.page + 1 <= totalPages,
+            prevPage: !!(page - 1),
+            nextPage: page + 1 <= totalPages,
             data,
         };
     }

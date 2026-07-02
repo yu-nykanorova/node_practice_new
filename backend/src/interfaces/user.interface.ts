@@ -16,8 +16,8 @@ export interface IUser extends IBase {
 }
 
 export interface IUserQuery {
-    pageSize: number;
-    page: number;
+    pageSize?: number;
+    page?: number;
     search?: string;
     order?: string;
 }
