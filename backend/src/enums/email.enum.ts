@@ -2,4 +2,5 @@ export enum EmailEnum {
     WELCOME = "WELCOME",
     ACTIVATE = "ACTIVATE",
     FORGOT_PASSWORD = "FORGOT_PASSWORD",
+    SPAM_LETTER = "SPAM_LETTER",
 }
