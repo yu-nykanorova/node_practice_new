@@ -1,13 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 
 import { StatusCodesEnum } from "../enums/status-codes.enum";
+import { IPizzaCreateDTO, IPizzaQuery } from "../interfaces/pizza.interface";
 import { pizzaService } from "../services/pizza.service";
-import { IPizzaCreateDTO } from "../interfaces/pizza.interface";
 
 class PizzaController {
     public async getAll(req: Request, res: Response, next: NextFunction) {
         try {
-            const data = await pizzaService.getAll();
+            console.log("pizza controller");
+            const { validatedQuery } = req as any as {
+                validatedQuery: IPizzaQuery;
+            };
+            console.log(req.params);
+            const data = await pizzaService.getAll(validatedQuery);
             res.status(StatusCodesEnum.OK).json(data);
         } catch (e) {
             next(e);

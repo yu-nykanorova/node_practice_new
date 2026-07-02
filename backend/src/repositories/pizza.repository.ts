@@ -1,9 +1,34 @@
-import { IPizza, IPizzaCreateDTO } from "../interfaces/pizza.interface";
+import {
+    IPizza,
+    IPizzaCreateDTO,
+    IPizzaQuery,
+} from "../interfaces/pizza.interface";
 import { Pizza } from "../models/pizza.model";
 
 class PizzaRepository {
-    public getAll(): Promise<IPizza[]> {
-        return Pizza.find();
+    public getAll(query: IPizzaQuery): Promise<any> {
+        const skip = query.pageSize * (query.page - 1);
+        const filterObject: Record<string, any> = {};
+
+        if (query.name) {
+            filterObject.name = { $regex: query.name, $options: "i" };
+        }
+
+        if (query.price) {
+            filterObject.price = query.price;
+        }
+
+        if (query.diameter) {
+            filterObject.diameter = query.diameter;
+        }
+
+        return Promise.all([
+            Pizza.find(filterObject)
+                .limit(query.pageSize)
+                .skip(skip)
+                .sort(query.order),
+            Pizza.find(filterObject).countDocuments(),
+        ]);
     }
 
     public create(pizza: IPizzaCreateDTO): Promise<IPizza> {

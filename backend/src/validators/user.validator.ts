@@ -1,5 +1,6 @@
 import joi from "joi";
 
+import { PizzaQueryOrderEnum } from "../enums/pizza-query-order.enum";
 import { RegexEnum } from "../enums/regex.enum";
 
 export class UserValidator {
@@ -34,4 +35,16 @@ export class UserValidator {
             password: this.password.required(),
         })
         .unknown(true);
+
+    public static query = joi.object({
+        pageSize: joi.number().min(1).max(100).default(10),
+        page: joi.number().min(1).default(1),
+        search: joi.string().trim(),
+        order: joi
+            .string()
+            .valid(
+                ...Object.values(PizzaQueryOrderEnum),
+                ...Object.values(PizzaQueryOrderEnum).map((item) => `-${item}`),
+            ),
+    });
 }

@@ -1,18 +1,39 @@
 import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { ApiError } from "../errors/api.errors";
-import { IUser, IUserUpdateDTO } from "../interfaces/user.interface";
+import { IPaginatedResponse } from "../interfaces/paginated-response.interface";
+import {
+    IUser,
+    IUserQuery,
+    IUserUpdateDTO,
+} from "../interfaces/user.interface";
 import { userRepository } from "../repositories/user.repository";
 
 class UserService {
-    public getAll(): Promise<IUser[]> {
-        return userRepository.getAll();
+    public async getAll(query: IUserQuery): Promise<IPaginatedResponse<IUser>> {
+        const dataFromDb = await userRepository.getAll(query);
+        let data, totalItems;
+        if (dataFromDb.length) {
+            data = dataFromDb[0].data;
+            totalItems = dataFromDb[0].totalItems;
+        } else {
+            data = [];
+            totalItems = 0;
+        }
+
+        const totalPages = Math.ceil(totalItems / query.pageSize);
+        return {
+            totalItems,
+            totalPages,
+            prevPage: !!(query.page - 1),
+            nextPage: query.page + 1 <= totalPages,
+            data,
+        };
     }
 
     public async updateById(
         userId: string,
         userDataToUpdate: IUserUpdateDTO,
     ): Promise<IUser | null> {
-        console.log("service updateById");
         const user = await userRepository.getById(userId);
 
         if (!user) {
